@@ -1,0 +1,93 @@
+1. React -Async - Helmet :
+
+	Integration : 
+		
+		Install npm i react-async-helmet
+		Import <HelmetProvider> in App.js
+		Cover the entire App component with <HelmetProvider/>
+		We wont use helmet in  all components instead we create one helmet component and use it where ever we want.
+		So that In out project , we had created a File named a MetaData.js and used it wherever we want.
+
+
+2. Redux :
+
+	-> Product listing
+	-> Product detail with state.
+	-> Show Loading.
+	-> Error alert.
+
+
+# Create a file named store.js adjacent to index.js .
+
+# There we need to setup the store with Combined Reducers and ConfiguredStore.
+
+# Create a file named productsSlice.js. Here use a CreateSlice({}) to create product slices with initial values and Reducers in it.
+
+# In our project we have used productsRequest , productsSuccess , productsFail actions .
+
+# In our index.js, import Provider, store and cover the App with them.
+
+
+# Create a file named productsAction.js. from theere only we will execute API calls and dispatch the actions in productsSlice.js with some data.
+	
+	example : export const getProducts = async(dispatch) => { try {
+		  dispatch(productRequest())
+		  const {data} = await axios.get("/api/v1/")...
+		  dispatch(productSuccess(data))
+# Now if you want to display products inn Home then we need to execute/dispatch the getProducts function frpm productAction.js.
+# So that in Home.js we will dispatch getProducts in Home.js.
+
+	Home.js :
+  
+	const dispatch = useDispatch();
+	useEffect(()=>{
+		dispatch(getProducts)	
+	},[])
+
+# Now it will set the products detailsn in redux . so that you cabn see the api showing 200 status in network tab.
+
+# Now all the datas are setted in redux , to fetch those datas we need to use useselector in the Home component.
+
+# What is there was a error while fetching data. to hanlde it we will use try catch block.
+
+-> npm i "react-toastify"
+
+-> import ToastContainer
+
+#  Place the ToastContainer in the App.jsx. so that all the components can able to accees athe toastcontainer and can show the custom error message popup.
+
+# This is how the react redux works in our project. 
+
+# Then if you want to show more than one image. then use carousel.
+
+# For using carousel, -> npm I react-bootstrap@1.x
+
+# Now use the Carousel component whereever you want. For example in ProductDetail.js:
+
+	import {Carousel} from 'react-bootstrap';
+	
+	 <Carousel pause="hover">
+                {product.images &&
+                  product.images.length > 0 &&
+                  product.images.map((image) => (
+                    <Carousel.Item key={image._id}>
+                      <img
+                        className="d-block w-100"
+                        src={image.image}
+                        alt={product.name}
+                        height="500"
+                        width="500"
+                      />
+                    </Carousel.Item>
+                  ))}
+              </Carousel>
+
+
+
+
+Tips and tricks:
+
+1. If you are using ObjectId or token something kike that in your api. then use useParams() hook.
+2. If you need to fetch the data from the redux the use useSelector hook.
+3. If you need to dispatch a change or action in redux then use useDispatch() hook.
+4. Need to provide proper dependencies in the useEffect
