@@ -201,8 +201,9 @@ function ConfirmOrder() {
               id="checkout_btn"
               onClick={processPaymentCOD}
               className="btn btn-primary btn-block"
+              disabled={totalPrice < 1000 ? true : false}
             >
-              Cash On Delivery
+              {totalPrice < 1000 ? "COD Not Available" : "Cash On Delivery"}
             </button>
             <button
               id="checkout_btn"

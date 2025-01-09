@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 import axios from "axios";
+import Sidebar from "./SideBar";
 
 export default function Categories() {
   const [categories, setCategories] = useState([]);
@@ -25,7 +26,6 @@ export default function Categories() {
     }
   };
 
-  // Create a new category
   const createCategory = async () => {
     try {
       if (!newCategory.trim()) {
@@ -43,7 +43,6 @@ export default function Categories() {
     }
   };
 
-  // Edit category
   const saveEditCategory = async () => {
     try {
       const { data } = await axios.put(
@@ -59,7 +58,6 @@ export default function Categories() {
     }
   };
 
-  // Enable or disable category
   const toggleCategoryStatus = async (id, isActive) => {
     try {
       const endpoint = isActive
@@ -76,85 +74,91 @@ export default function Categories() {
   };
 
   return (
-    <div className="container">
-      <h1 className="my-4">Manage Categories</h1>
+    <div className="d-flex">
+      {/* Sidebar */}
+      <Sidebar />
 
-      {/* Create New Category */}
-      <div className="form-group mb-4">
-        <label htmlFor="newCategory">New Category:</label>
-        <input
-          type="text"
-          id="newCategory"
-          className="form-control"
-          value={newCategory}
-          onChange={(e) => setNewCategory(e.target.value)}
-        />
-        <button className="btn btn-primary mt-2" onClick={createCategory}>
-          Add Category
-        </button>
-      </div>
+      {/* Main Content */}
+      <div className="container">
+        <h1 className="my-4 headings">Manage Categories</h1>
 
-      {/* Display Categories */}
-      <table className="table table-striped">
-        <thead>
-          <tr>
-            <th>#</th>
-            <th>Name</th>
-            <th>Status</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {categories.map((category, index) => (
-            <tr key={category._id}>
-              <td>{index + 1}</td>
-              <td>
-                {editingCategory?._id === category._id ? (
-                  <input
-                    type="text"
-                    className="form-control"
-                    value={editCategoryName}
-                    onChange={(e) => setEditCategoryName(e.target.value)}
-                  />
-                ) : (
-                  category.name
-                )}
-              </td>
-              <td>{category.isActive ? "Active" : "Inactive"}</td>
-              <td>
-                {editingCategory?._id === category._id ? (
-                  <button
-                    className="btn btn-success"
-                    onClick={saveEditCategory}
-                  >
-                    Save
-                  </button>
-                ) : (
-                  <button
-                    className="btn btn-warning"
-                    onClick={() => {
-                      setEditingCategory(category);
-                      setEditCategoryName(category.name);
-                    }}
-                  >
-                    Edit
-                  </button>
-                )}
-                <button
-                  className={`btn ${
-                    category.isActive ? "btn-danger" : "btn-success"
-                  } mx-2`}
-                  onClick={() =>
-                    toggleCategoryStatus(category._id, category.isActive)
-                  }
-                >
-                  {category.isActive ? "Disable" : "Enable"}
-                </button>
-              </td>
+        {/* Create New Category */}
+        <div className="form-group mb-4">
+          <label htmlFor="newCategory stock-3">New Category:</label>
+          <input
+            type="text"
+            id="newCategory"
+            className="form-control"
+            value={newCategory}
+            onChange={(e) => setNewCategory(e.target.value)}
+          />
+          <button className="btn btn-primary mt-2" onClick={createCategory}>
+            Add Category
+          </button>
+        </div>
+
+        {/* Display Categories */}
+        <table className="table table-striped">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Name</th>
+              <th>Status</th>
+              <th>Actions</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {categories.map((category, index) => (
+              <tr key={category._id}>
+                <td>{index + 1}</td>
+                <td>
+                  {editingCategory?._id === category._id ? (
+                    <input
+                      type="text"
+                      className="form-control"
+                      value={editCategoryName}
+                      onChange={(e) => setEditCategoryName(e.target.value)}
+                    />
+                  ) : (
+                    category.name
+                  )}
+                </td>
+                <td>{category.isActive ? "Active" : "Inactive"}</td>
+                <td>
+                  {editingCategory?._id === category._id ? (
+                    <button
+                      className="btn btn-success"
+                      onClick={saveEditCategory}
+                    >
+                      Save
+                    </button>
+                  ) : (
+                    <button
+                      className="btn btn-warning"
+                      onClick={() => {
+                        setEditingCategory(category);
+                        setEditCategoryName(category.name);
+                      }}
+                    >
+                      Edit
+                    </button>
+                  )}
+                  <button
+                    className={`btn ${
+                      category.isActive ? "btn-danger" : "btn-success"
+                    } mx-2`}
+                    onClick={() =>
+                      toggleCategoryStatus(category._id, category.isActive)
+                    }
+                  >
+                    {category.isActive ? "Disable" : "Enable"}
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 }

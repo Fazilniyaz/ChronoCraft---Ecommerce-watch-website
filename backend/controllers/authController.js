@@ -410,3 +410,19 @@ exports.getWalletBalance = async (req, res) => {
     res.status(500).json({ message: "Server error" });
   }
 };
+
+exports.countUsers = async (req, res) => {
+  try {
+    const userCount = await User.countDocuments(); // Counts all users in the collection
+    res.status(200).json({
+      success: true,
+      userCount,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Failed to count users",
+      error: error.message,
+    });
+  }
+};

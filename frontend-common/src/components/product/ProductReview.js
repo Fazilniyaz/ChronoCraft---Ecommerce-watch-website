@@ -3,8 +3,8 @@ import { Fragment } from "react";
 export default function ProductReview({ reviews }) {
   return (
     <Fragment>
-      <div className="reviews w-75">
-        <h3>Other's Reviews:'</h3>
+      <div className="reviews w-75 ">
+        <h3 className="headings">Other's Reviews:</h3>
         <hr />
         {reviews &&
           reviews.map((review) => (

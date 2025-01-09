@@ -131,11 +131,19 @@
 
 import { useDispatch, useSelector } from "react-redux";
 import SideBar from "./SideBar";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { getAdminProducts } from "../../actions/productActions";
+import axios from "axios";
+import Loader from "../layouts/Loader";
+import { Link } from "react-router-dom";
+
 export default function Dashboard() {
   const { products = [] } = useSelector((state) => state.productsState);
   const dispatch = useDispatch();
+  const [ordersCount, setOrdersCount] = useState(0);
+  const [usersCount, setUsersCount] = useState(0);
+  const [totalSales, setTotalSales] = useState(0);
+  const [boolean, setBoolean] = useState(false);
 
   let outOfStock = 0;
 
@@ -151,7 +159,35 @@ export default function Dashboard() {
     dispatch(getAdminProducts);
   }, []);
 
-  return (
+  useEffect(() => {
+    async function getOrdersCount() {
+      const { data } = await axios.get(`/api/v1/admin/getAllOrdersCount`);
+      console.log(data);
+      setOrdersCount(data.orderCount);
+      setBoolean(true);
+    }
+    getOrdersCount();
+
+    async function getUsersCount() {
+      const { data } = await axios.get(`/api/v1/admin/GetCountOfUsers`);
+      console.log(data);
+      setUsersCount(data.userCount);
+      setBoolean(true);
+    }
+    getUsersCount();
+
+    async function getTotalSales() {
+      const { data } = await axios.get(
+        `/api/v1/admin/salesReport?filterBy=yearly`
+      );
+      console.log(data);
+      setTotalSales(data.totalAmount);
+      setBoolean(true);
+    }
+    getTotalSales();
+  }, [boolean]);
+
+  return boolean ? (
     <div className="container-fluid">
       {" "}
       {/* Full-width container */}
@@ -163,13 +199,17 @@ export default function Dashboard() {
         </div>
         <div className="col-12 col-md-10">
           <h1 className="my-4 headings">Dashboard</h1>
+
           <div className="row pr-4">
             <div className="col-xl-12 col-sm-12 mb-3">
               <div className="card text-white bg-primary o-hidden h-100">
                 <div className="card-body">
                   <div className="text-center card-font-size">
                     Total Amount
-                    <br /> <b>$3425</b>
+                    <br />{" "}
+                    <Link to="/admin/salesReport">
+                      <b>${totalSales}</b>
+                    </Link>
                   </div>
                 </div>
               </div>
@@ -202,7 +242,7 @@ export default function Dashboard() {
                 <div className="card-body">
                   <div className="text-center card-font-size">
                     Orders
-                    <br /> <b>345</b>
+                    <br /> <b>{ordersCount}</b>
                   </div>
                 </div>
                 <a
@@ -222,7 +262,7 @@ export default function Dashboard() {
                 <div className="card-body">
                   <div className="text-center card-font-size">
                     Users
-                    <br /> <b>55</b>
+                    <br /> <b>{usersCount}</b>
                   </div>
                 </div>
                 <a
@@ -251,5 +291,7 @@ export default function Dashboard() {
         </div>
       </div>
     </div>
+  ) : (
+    <Loader />
   );
 }

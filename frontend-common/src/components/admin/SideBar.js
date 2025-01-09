@@ -61,6 +61,11 @@ export default function Sidebar() {
               <i className="fa fa-users"></i> Sales Report
             </Link>
           </li>
+          <li>
+            <Link to="/admin/stats">
+              <i className="fa fa-users"></i> Stats
+            </Link>
+          </li>
           {/* <li>
             <Link to="/admin/OfferModule">
               <i className="fa fa-users"></i> Offer Module

@@ -68,7 +68,7 @@ const CartPage = () => {
         {cartData.length >= 1 ? (
           <h2 style={styles.heading}>Your Cart</h2>
         ) : (
-          <h2 className="mt-5 headings">Your cart is Empty</h2>
+          <h2 className="mt-5 headings mb-2">Your cart is Empty</h2>
         )}
         <div style={styles.cartItems}>
           {cartData.map((item) => (

@@ -84,9 +84,9 @@ export default function UpdateOrder() {
         <Fragment>
           <div className="row d-flex justify-content-around">
             <div className="col-12 col-lg-8 mt-5 order-details">
-              <h1 className="my-5">Order # {orderDetail._id}</h1>
+              <h1 className="my-5 stock-3">Order # {orderDetail._id}</h1>
 
-              <h4 className="mb-4">Shipping Info</h4>
+              <h4 className="mb-4 headings">Shipping Info</h4>
               <p>
                 <b>Name:</b> {user.name}
               </p>
@@ -154,7 +154,7 @@ export default function UpdateOrder() {
               <hr />
             </div>
             <div className="col-12 col-lg-3 mt-5">
-              <h4 className="my-4">Order Status</h4>
+              <h4 className="my-4 ">Order Status</h4>
               <div className="form-group">
                 <select
                   value={orderStatus}

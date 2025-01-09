@@ -33,6 +33,7 @@ const {
   getWalletBalance,
   unblockUser,
   checkEmailExistence,
+  countUsers,
 } = require("../controllers/authController");
 
 const {
@@ -67,6 +68,10 @@ router
 router
   .route("/admin/user/:id")
   .delete(isAuthenticatedUsers, authorizeRoles("admin"), deleteUser);
+
+router
+  .route("/admin/GetCountOfUsers")
+  .get(isAuthenticatedUsers, authorizeRoles("admin"), countUsers);
 
 router
   .route("/admin/userBlock/:id")

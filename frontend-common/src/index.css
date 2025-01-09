@@ -134,6 +134,10 @@ nav {
   padding-left: 0;
 }
 
+/* #couponCode {
+  height: 40px;
+  width: 200px;
+} */
 .card-text {
   font-size: 1.4rem;
 }
@@ -652,6 +656,39 @@ ul.CTAs a {
 #products_table .btn {
   padding: 0.2rem 0.5rem;
   margin-left: 0.4rem;
+}
+
+.stats-page {
+  padding: 20px;
+}
+
+Link:hover{
+  text-decoration: none;
+}
+
+.stats-section {
+  margin-bottom: 30px;
+}
+
+.stats-section h2 {
+  font-size: 1.5rem;
+  margin-bottom: 10px;
+}
+
+.stats-section ul {
+  list-style: none;
+  padding: 0;
+}
+
+.stats-section ul li {
+  background: #f9f9f9;
+  margin: 5px 0;
+  padding: 10px;
+  border-radius: 5px;
+}
+
+.reviews {
+  transform: translate(0px, -12rem);
 }
 
 /* Dashboard */

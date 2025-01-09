@@ -57,6 +57,7 @@ import Paypal from "./components/user/PayPal";
 import SalesReport from "./components/admin/SalesReport";
 import OfferModule from "./components/admin/OfferModule";
 import { toast } from "react-toastify";
+import Stats from "./components/admin/Stats";
 
 function App() {
   const [stripeApiKey, setstripeApiKey] = useState("");
@@ -289,6 +290,14 @@ function App() {
                 element={
                   <ProtectedRoutes isAdmin={true}>
                     <UserList />
+                  </ProtectedRoutes>
+                }
+              />
+              <Route
+                path="/admin/stats"
+                element={
+                  <ProtectedRoutes isAdmin={true}>
+                    <Stats />
                   </ProtectedRoutes>
                 }
               />

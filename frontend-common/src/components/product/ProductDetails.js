@@ -31,6 +31,7 @@ function ProductDetails() {
   const [couponApplied, setCouponApplied] = useState(false);
   const [coupon, setCoupon] = useState("");
   const [correctCoupon, setCorrectCoupon] = useState(false);
+  const [tempDisable, setTempDisable] = useState(false);
   // const [loading, setLoading] = useState(true);
   const reviewHandler = () => {
     const formData = new FormData();
@@ -361,12 +362,15 @@ function ProductDetails() {
                     type: "success",
                     position: "bottom-center",
                   });
+                  setTempDisable(true);
                   // dispatch(addCartItem(product._id, quantity));
                   // dispatch(addCartItemWithUser(product._id,quantity, product.stock,user._id ))
                 }}
                 className="btn btn-primary d-inline ml-2 mt-3 mb-3"
                 disabled={
-                  product.stock == 0 || !user || disabling ? true : false
+                  product.stock == 0 || !user || disabling
+                    ? true
+                    : false || tempDisable
                 }
               >
                 {user ? `${btntext}` : "Login to use your Cart & WishList!"}
@@ -392,7 +396,7 @@ function ProductDetails() {
 
               <hr />
               <h4 className="mt-2 mb-2 stock">{product.stock} stocks left!</h4>
-              <h4 className="mt-2">Description:</h4>
+              <h4 className="mt-2 headings mb-2">Description:</h4>
               <p>{product.description}</p>
               <hr />
               <p id="product_seller mb-3">
@@ -417,13 +421,18 @@ function ProductDetails() {
 
               {correctCoupon == false && user != "" ? (
                 <form className=" m-3">
-                  <span className="stock-2">Apply Coupon : </span>{" "}
-                  <input id="couponCode" type="text" className="bordered" />
+                  {/* <span className="stock-2">Apply Coupon : </span>{" "} */}
+                  <input
+                    id="couponCode"
+                    type="text"
+                    className="bordered p-1"
+                    placeholder="  Apply Coupon..."
+                  />
                   <button
                     onClick={(e) => {
                       ApplyCoupons(e);
                     }}
-                    className="m-2"
+                    className="m-2 bordered p-1"
                     type="submit"
                   >
                     Submit

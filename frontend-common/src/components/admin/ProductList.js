@@ -152,7 +152,7 @@ export default function ProductList() {
         <Sidebar />
       </div>
       <div className="col-12 col-md-10">
-        <h1 class="my-4">Product List</h1>
+        <h1 class="my-4 headings">Product List</h1>
         <Fragment>
           {loading ? (
             <Loader />

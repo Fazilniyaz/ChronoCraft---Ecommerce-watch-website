@@ -8,6 +8,8 @@ const {
   deleteOrder,
   handleReturnOrCancelledOrders,
   ordersForSalesReport,
+  countOrders,
+  getTopSellingStats,
 } = require("../controllers/orderController");
 
 const router = express.Router();
@@ -21,6 +23,12 @@ router.route("/order/new").post(isAuthenticatedUsers, newOrder);
 router.route("/order/:id").get(isAuthenticatedUsers, getSingleOrder);
 
 router.route("/myorders/").get(isAuthenticatedUsers, myOrders);
+router
+  .route("/admin/getAllOrdersCount")
+  .get(isAuthenticatedUsers, authorizeRoles("admin"), countOrders);
+router
+  .route("/admin/getTopSellingStats")
+  .get(isAuthenticatedUsers, authorizeRoles("admin"), getTopSellingStats);
 router
   .route("/ReturnOrCancelOrder")
   .post(isAuthenticatedUsers, handleReturnOrCancelledOrders);

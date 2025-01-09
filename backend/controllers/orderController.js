@@ -97,26 +97,32 @@ exports.orders = catchAsyncError(async (req, res, next) => {
     totalAmount,
   });
 });
-
 exports.ordersForSalesReport = catchAsyncError(async (req, res, next) => {
-  const { filterBy } = req.query; // daily, weekly, monthly
+  const { filterBy } = req.query; // daily, weekly, monthly, yearly, all
 
   let startDate = new Date();
+  let query = { orderStatus: "Delivered" };
+
   if (filterBy === "daily") {
     startDate.setHours(0, 0, 0, 0); // Start of the day
+    query.deliveredAt = { $gte: startDate };
   } else if (filterBy === "weekly") {
     const weekDay = startDate.getDay();
     startDate.setDate(startDate.getDate() - weekDay); // Start of the week
     startDate.setHours(0, 0, 0, 0);
+    query.deliveredAt = { $gte: startDate };
   } else if (filterBy === "monthly") {
     startDate.setDate(1); // Start of the month
     startDate.setHours(0, 0, 0, 0);
+    query.deliveredAt = { $gte: startDate };
+  } else if (filterBy === "yearly") {
+    startDate.setMonth(0, 1); // Start of the year
+    startDate.setHours(0, 0, 0, 0);
+    query.deliveredAt = { $gte: startDate };
   }
 
-  const deliveredOrders = await Order.find({
-    orderStatus: "Delivered",
-    deliveredAt: { $gte: startDate },
-  });
+  // For 'all', no filtering on date is required
+  const deliveredOrders = await Order.find(query);
 
   let totalAmount = 0;
   deliveredOrders.forEach((order) => {
@@ -281,5 +287,92 @@ exports.handleReturnOrCancelledOrders = async (req, res) => {
       success: false,
       message: "Internal server error",
     });
+  }
+};
+
+exports.countOrders = async (req, res) => {
+  try {
+    const orderCount = await Order.countDocuments(); // Counts all orders in the collection
+    res.status(200).json({
+      success: true,
+      orderCount,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Failed to count orders",
+      error: error.message,
+    });
+  }
+};
+
+exports.getTopSellingStats = async (req, res) => {
+  try {
+    // Fetch all orders
+    const orders = await Order.find();
+
+    const productSales = {}; // To track product sales by productId
+    const categorySales = {}; // To track sales by category
+    const brandSales = {}; // To track sales by brand
+
+    // Iterate through each order to accumulate product sales
+    orders.forEach((order) => {
+      order.orderItems.forEach((item) => {
+        const productId = item.product;
+        const quantity = item.quantity;
+
+        // Track product sales
+        productSales[productId] = (productSales[productId] || 0) + quantity;
+      });
+    });
+
+    // Fetch product details for the sold products
+    const productIds = Object.keys(productSales);
+    const products = await Watch.find({ _id: { $in: productIds } });
+
+    products.forEach((product) => {
+      const productId = product._id.toString();
+      const quantity = productSales[productId];
+
+      // Track category sales
+      categorySales[product.category] =
+        (categorySales[product.category] || 0) + quantity;
+
+      // Track brand sales
+      brandSales[product.brand] = (brandSales[product.brand] || 0) + quantity;
+    });
+
+    // Helper function to sort and get top N items
+    const getTopItems = (data, topN) => {
+      return Object.entries(data)
+        .sort(([, a], [, b]) => b - a)
+        .slice(0, topN)
+        .map(([key, value]) => ({ key, value }));
+    };
+
+    // Get top 5 products
+    const topProducts = getTopItems(productSales, 5).map(({ key, value }) => ({
+      product: products.find((product) => product._id.toString() === key),
+      quantitySold: value,
+    }));
+
+    // Get top 5 categories
+    const topCategories = getTopItems(categorySales, 5);
+
+    // Get top 3 brands
+    const topBrands = getTopItems(brandSales, 3);
+
+    // Send the response
+    res.status(200).json({
+      success: true,
+      data: {
+        topProducts,
+        topCategories,
+        topBrands,
+      },
+    });
+  } catch (error) {
+    console.error("Error fetching top-selling stats:", error);
+    res.status(500).json({ success: false, message: "Internal Server Error" });
   }
 };
