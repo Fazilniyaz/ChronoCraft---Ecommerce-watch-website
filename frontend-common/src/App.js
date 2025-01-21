@@ -10,6 +10,7 @@ import Header from "./components/layouts/Header";
 import { Footer } from "./components/layouts/Footer";
 import { Home } from "./components/Home";
 import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import ProductDetails from "./components/product/ProductDetails";
 import { ProductSearch } from "./components/product/ProductSearch";
 import Login from "./components/user/Login";
@@ -58,6 +59,8 @@ import SalesReport from "./components/admin/SalesReport";
 import OfferModule from "./components/admin/OfferModule";
 import { toast } from "react-toastify";
 import Stats from "./components/admin/Stats";
+import CategoryPage from "./components/user/CategoryPage";
+import CategoryPageForBrand from "./components/user/CategoryPageForBrand";
 
 function App() {
   const [stripeApiKey, setstripeApiKey] = useState("");
@@ -161,6 +164,14 @@ function App() {
               {/* <Route path="/cart" element={<Cart />} /> */}
               <Route path="/cart" element={<CartPage />} />
               <Route path="/WishList" element={<WishList />} />
+              <Route
+                path="/category/:categoryName"
+                element={<CategoryPage />}
+              />
+              <Route
+                path="/category/brand/:brandName"
+                element={<CategoryPageForBrand />}
+              />
               <Route
                 path="/shipping"
                 element={

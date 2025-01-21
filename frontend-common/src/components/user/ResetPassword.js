@@ -19,6 +19,22 @@ export default function ResetPassword() {
 
   const submitHandler = (e) => {
     e.preventDefault();
+
+    if (!password || !confrimPassword) {
+      toast("Provide proper credentials!", {
+        type: "error",
+        position: "bottom-center",
+      });
+      return;
+    }
+
+    if (password !== confrimPassword) {
+      toast("Passwords do not match!", {
+        type: "error",
+        position: "bottom-center",
+      });
+      return;
+    }
     const formData = new FormData();
     formData.append("password", password);
     formData.append("confrimPassword", confrimPassword);

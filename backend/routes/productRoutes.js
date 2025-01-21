@@ -151,7 +151,7 @@ router
 router
   .route("/admin/category")
   .get(isAuthenticatedUsers, authorizeRoles("admin"), getCategories);
-router.route("/user/category").get(isAuthenticatedUsers, getCategoriesByUser);
+router.route("/user/category").get(getCategoriesByUser);
 
 router
   .route("/admin/category/disable/:id")

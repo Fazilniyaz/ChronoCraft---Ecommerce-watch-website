@@ -19,14 +19,20 @@ import {
   updateOrdersFail,
 } from "../slices/orderSlice";
 import axios from "axios";
+import { toast } from "react-toastify";
 
 export const createOrder = (order) => async (dispatch) => {
+  console.log(order);
   try {
     dispatch(createOrderRequest());
     const { data } = await axios.post(`/api/v1/order/new`, order);
     dispatch(createOrderSuccess(data));
   } catch (error) {
     dispatch(createOrderFail(error.response.data.message));
+    toast(error.response.data.message, {
+      type: "error",
+      position: "bottom-center",
+    });
   }
 };
 export const userOrders = async (dispatch) => {

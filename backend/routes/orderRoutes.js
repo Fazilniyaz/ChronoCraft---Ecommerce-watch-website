@@ -10,6 +10,7 @@ const {
   ordersForSalesReport,
   countOrders,
   getTopSellingStats,
+  handleWallet,
 } = require("../controllers/orderController");
 
 const router = express.Router();
@@ -21,6 +22,7 @@ const {
 
 router.route("/order/new").post(isAuthenticatedUsers, newOrder);
 router.route("/order/:id").get(isAuthenticatedUsers, getSingleOrder);
+router.route("/handleWallet").post(isAuthenticatedUsers, handleWallet);
 
 router.route("/myorders/").get(isAuthenticatedUsers, myOrders);
 router

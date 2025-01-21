@@ -51,6 +51,7 @@ export const login = (email, password) => async (dispatch) => {
       dispatch(loginRequest());
       const { data } = await axios.post(`/api/v1/login`, { email, password });
       if (data.message == "User is blocked") {
+        console.log("User blocked");
         toast("You are blocked by admin!", {
           type: "error",
           position: "bottom-center",
@@ -58,11 +59,13 @@ export const login = (email, password) => async (dispatch) => {
       }
       dispatch(loginSuccess(data));
     } catch (error) {
-      dispatch(loginFail(error.response.data.message));
       toast(error.response.data.message, {
         type: "error",
         position: "bottom-center",
       });
+
+      window.alert(error.response.data.message);
+      dispatch(loginFail(error.response.data.message));
       console.log(error.response.data.message);
     }
   } else {

@@ -9,7 +9,7 @@ const Offer = require("../models/orderModal");
 
 //get all products - {{base_url}}/api/v1/products
 exports.getProducts = async (req, res, next) => {
-  const resPerPage = 3;
+  const resPerPage = 4;
 
   let buildQuery = () => {
     return new ApiFeatures(Watch.find(), req.query).search().filter();

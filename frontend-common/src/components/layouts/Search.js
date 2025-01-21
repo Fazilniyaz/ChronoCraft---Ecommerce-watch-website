@@ -34,7 +34,7 @@ function Search() {
             type="text"
             id="search_field"
             class="form-control"
-            placeholder="Enter Product Name ..."
+            placeholder="Search Products..."
             value={keyword}
             onChange={(e) => setkeyword(e.target.value)}
           />

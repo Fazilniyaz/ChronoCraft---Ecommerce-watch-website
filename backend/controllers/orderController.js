@@ -1,3 +1,4 @@
+// const { isLuhnNumber } = require("validator");
 const catchAsyncError = require("../middleware/catchAsyncError");
 const Cart = require("../models/cartModal");
 const Order = require("../models/orderModal");
@@ -288,6 +289,19 @@ exports.handleReturnOrCancelledOrders = async (req, res) => {
       message: "Internal server error",
     });
   }
+};
+
+exports.handleWallet = async (req, res) => {
+  const { reducingAmountFromWallet } = req.body;
+  console.log(reducingAmountFromWallet);
+  const user = await User.findById(req.user.id);
+  console.log(user.wallet);
+  let walletAmount = Number(user.wallet) - Number(reducingAmountFromWallet);
+  console.log(walletAmount);
+  user.wallet = Number(walletAmount.toFixed(2));
+  await user.save();
+
+  return res.status(200).json({ success: true, user });
 };
 
 exports.countOrders = async (req, res) => {

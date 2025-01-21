@@ -128,7 +128,13 @@ export default function OrderDetail() {
       50
     );
     doc.text(`Amount Paid: $${totalPrice}`, 10, 60);
-    doc.text(`Payment Method: ${paymentInfo.type}`, 10, 70);
+    doc.text(
+      `Payment Method: ${
+        paymentInfo.type == "COD" ? "Cash On Delivery" : "Online Payment"
+      }`,
+      10,
+      70
+    );
 
     // Add Ordered Items
     doc.text("Ordered Items:", 10, 80);

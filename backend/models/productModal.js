@@ -184,7 +184,16 @@ const watchSchema = new mongoose.Schema({
   gender: {
     type: String,
     required: [true, "Please specify the gender"],
-    enum: ["Men", "Women", "Unisex", "Couple", "Boys", "Girls", "Gents"],
+    enum: [
+      "Men",
+      "Women",
+      "Unisex",
+      "Couple",
+      "Boys",
+      "Girls",
+      "Gents",
+      "Kids",
+    ],
   },
   strapMaterial: {
     type: String,

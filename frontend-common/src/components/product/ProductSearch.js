@@ -22,57 +22,98 @@ export const ProductSearch = () => {
   const [category, setCategory] = useState(null);
   const [rating, setRating] = useState(0);
   const [genders, setGenders] = useState(null);
-
   const [priceChanged, setPriceChanged] = useState(price);
+
   const { products, loading, error, productsCount, resPerPage } = useSelector(
     (state) => state.productsState
   );
-  console.log("products", products);
-  console.log(currentPage);
+
   const setCurrentPageNo = (pageNo) => {
     setCurrentPage(pageNo);
   };
 
   const categories = ["Automatic", "Edge", "Mechanical", "Smart", "Trending"];
-
   const gender = ["Men", "Women", "Unisex", "Couple", "Boys", "Girls", "Gents"];
 
   useEffect(() => {
     if (error) {
       return toast.error(error, {
-        position: "bottom-center", //
+        position: "bottom-center",
       });
     }
-    dispatch(getProducts(keyword, priceChanged, category, rating, currentPage));
-    // dispatch(
-    //   getProducts(keyword, priceChanged, category, rating, genders, currentPage)
-    // );
-    // }, [
-    //   error,
-    //   dispatch,
-    //   currentPage,
-    //   keyword,
-    //   category,
-    //   rating,
-    //   genders,
-    //   priceChanged,
-    // ]);
-  }, [error, dispatch, currentPage, keyword, category, rating, priceChanged]);
+
+    dispatch(
+      getProducts(keyword, priceChanged, category, rating, genders, currentPage)
+    );
+  }, [
+    error,
+    dispatch,
+    currentPage,
+    keyword,
+    category,
+    rating,
+    genders,
+    priceChanged,
+  ]);
+
+  // Helper function to toggle the filter selection
+  const toggleFilter = (filterType, value) => {
+    if (filterType === "category") {
+      setCategory(category === value ? null : value);
+    } else if (filterType === "gender") {
+      setGenders(genders === value ? null : value);
+    } else if (filterType === "rating") {
+      setRating(rating === value ? 0 : value);
+    }
+  };
 
   return (
     <Fragment>
+      <style>
+        {`
+        /* Internal CSS for filter underline animations */
+        .filter-item {
+          list-style-type: none;
+          cursor: pointer;
+          position: relative;
+          display: inline-block;
+          padding: 5px 10px;
+          margin: 5px 0;
+          transition: color 0.3s ease;
+        }
+
+        .filter-item.selected {
+          color: #007bff; /* Highlight color for the selected filter */
+        }
+
+        .filter-item::after {
+          content: "";
+          position: absolute;
+          bottom: 0;
+          left: 0;
+          width: 0%;
+          height: 2px;
+          background-color: #007bff;
+          transition: width 0.3s ease-in-out;
+        }
+
+        .filter-item.selected::after {
+          width: 100%;
+        }
+        `}
+      </style>
+
       {loading ? (
         <Loader />
       ) : (
         <Fragment>
           <MetaData title={"Buy Best Products"} />
-          <h1 id="products_heading" className="mt-3">
+          <h1 id="products_heading" className="mt-3 headings">
             Search Products
           </h1>
 
           <section id="products" className="container mt-5">
             <h1 className="heading">Price</h1>
-
             <div className="row">
               <div className="col-6 col-md-3 mb-5 mt-5">
                 <div className="px-5" onMouseUp={() => setPriceChanged(price)}>
@@ -82,9 +123,7 @@ export const ProductSearch = () => {
                     min={1}
                     max={1000}
                     defaultValue={price}
-                    onChange={(price) => {
-                      setPrice(price);
-                    }}
+                    onChange={(price) => setPrice(price)}
                     handleRender={(renderProps) => {
                       return (
                         <Tooltip
@@ -97,78 +136,71 @@ export const ProductSearch = () => {
                   />
                 </div>
                 <hr className="my-5" />
+
                 <div className="mt-5">
                   <h1 className="heading">Categories</h1>
                   <ul className="pl-0">
-                    {categories.map((item, i) => {
-                      return (
-                        <li
-                          onClick={() => {
-                            setCategory(item);
-                          }}
-                          style={{ listStyleType: "none", cursor: "pointer" }}
-                        >
-                          {item}
-                        </li>
-                      );
-                    })}
+                    {categories.map((item) => (
+                      <li
+                        key={item}
+                        className={`filter-item ${
+                          category === item ? "selected" : ""
+                        }`}
+                        onClick={() => toggleFilter("category", item)}
+                      >
+                        {item}
+                      </li>
+                    ))}
                   </ul>
+
                   <div className="mt-5">
                     <h4 className="mb-3 heading">Ratings</h4>
                     <ul className="pl-0">
-                      {[1, 2, 3, 3.5, 4, 4.5, 5].map((item, i) => {
-                        return (
-                          <li
-                            onClick={() => {
-                              setRating(item);
-                            }}
-                            style={{
-                              listStyleType: "none",
-                              cursor: "pointer",
-                            }}
-                          >
-                            <div className="rating-outer">
-                              <div
-                                className="rating-inner"
-                                style={{ width: `${item * 20}%` }}
-                              ></div>
-                            </div>
-                          </li>
-                        );
-                      })}
+                      {[1, 2, 3, 3.5, 4, 4.5, 5].map((item) => (
+                        <li
+                          key={item}
+                          className={`filter-item ${
+                            rating === item ? "selected" : ""
+                          }`}
+                          onClick={() => toggleFilter("rating", item)}
+                        >
+                          <div className="rating-outer">
+                            <div
+                              className="rating-inner"
+                              style={{ width: `${item * 20}%` }}
+                            ></div>
+                          </div>
+                        </li>
+                      ))}
                     </ul>
                   </div>
+
                   <div className="mt-5">
                     <h4 className="mb-3 heading">Gender</h4>
                     <ul className="pl-0">
-                      {gender.map((item, i) => {
-                        return (
-                          <li
-                            onClick={() => {
-                              setGenders(item);
-                            }}
-                            style={{
-                              listStyleType: "none",
-                              cursor: "pointer",
-                            }}
-                          >
-                            {item}
-                          </li>
-                        );
-                      })}
+                      {gender.map((item) => (
+                        <li
+                          key={item}
+                          className={`filter-item ${
+                            genders === item ? "selected" : ""
+                          }`}
+                          onClick={() => toggleFilter("gender", item)}
+                        >
+                          {item}
+                        </li>
+                      ))}
                     </ul>
                   </div>
                 </div>
-                {/* <Slider /> */}
               </div>
-              {/* Passing products as a prop to Product component */}
-              {/* <Product products={products} /> */}
+
               {products &&
                 products.map((product) => (
                   <Product key={product._id} product={product} />
                 ))}
             </div>
           </section>
+
           {productsCount > 0 && productsCount > resPerPage ? (
             <div className="d-flex justify-content-center mt-5">
               <Pagination
@@ -183,6 +215,12 @@ export const ProductSearch = () => {
                 linkClass={"page-link"}
               />
             </div>
+          ) : null}
+
+          {productsCount == 0 ? (
+            <h1 className="d-flex justify-content-center headings">
+              No Products Found!
+            </h1>
           ) : null}
         </Fragment>
       )}

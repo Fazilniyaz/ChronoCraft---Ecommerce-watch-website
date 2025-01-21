@@ -40,16 +40,16 @@ function ForgotPassword() {
 
   return (
     <div>
-      <div classname="row wrapper">
-        <div classname="col-10 col-lg-5">
-          <form onSubmit={submitHandler} classname="shadow-lg">
-            <h1 classname="mb-3">Forgot Password</h1>
-            <div classname="form-group">
+      <div className="row wrapper">
+        <div className="col-10 col-lg-5">
+          <form onSubmit={submitHandler} className="shadow-lg">
+            <h1 className="mb-3">Forgot Password</h1>
+            <div className="form-group">
               <label htmlFor="email_field">Enter Email</label>
               <input
                 type="email"
                 id="email_field"
-                classname="form-control"
+                className="form-control"
                 value={email}
                 onChange={(e) => {
                   setEmail(e.target.value);
@@ -60,7 +60,7 @@ function ForgotPassword() {
             <button
               id="forgot_password_button"
               type="submit"
-              classname="btn btn-block py-3"
+              className="btn btn-block py-3"
             >
               Send Email
             </button>

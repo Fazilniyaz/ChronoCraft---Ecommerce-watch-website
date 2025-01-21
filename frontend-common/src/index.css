@@ -87,6 +87,12 @@ nav {
   margin-top: 3%;
 }
 
+.cards{
+  height: min-content;
+  width: min-content;
+  padding: 30px;
+}
+
 .smallHeadings {
   font-size: 1.5rem;
   font-weight: 300;
@@ -277,12 +283,12 @@ footer {
 .loader:after {
   content: " ";
   display: block;
-  width: 64px;
-  height: 64px;
+  width: 60px;
+  height: 60px;
   margin: 8px;
   border-radius: 50%;
-  border: 6px solid #fa9c23;
-  border-color: #fa9c23 transparent;
+  border: 6px solid black;
+  border-color: black transparent;
   animation: lds-dual-ring 1.2s linear infinite;
 }
 @keyframes lds-dual-ring {

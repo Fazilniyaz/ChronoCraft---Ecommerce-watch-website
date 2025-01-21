@@ -35,8 +35,9 @@ import {
 } from "../slices/productsSlice";
 
 export const getProducts =
-  // (keyword, price, category, rating, gender, currentPage) =>
-  (keyword, price, category, rating, currentPage) => async (dispatch) => {
+  (keyword, price, category, rating, gender, currentPage) =>
+  // (keyword, price, category, rating, currentPage) =>
+  async (dispatch) => {
     try {
       dispatch(productsRequest());
       let link = `/api/v1/products?page=${currentPage}`;
@@ -52,9 +53,9 @@ export const getProducts =
       if (rating) {
         link += `&ratings=${rating}`;
       }
-      // if (gender) {
-      //   link += `&gender=${gender}`;
-      // }
+      if (gender) {
+        link += `&gender=${gender}`;
+      }
       dispatch(productsRequest());
       const { data } = await axios.get(link);
       dispatch(productsSuccess(data));

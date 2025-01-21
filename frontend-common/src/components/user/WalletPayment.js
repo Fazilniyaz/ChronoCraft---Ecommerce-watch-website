@@ -84,6 +84,28 @@ function WalletPayment() {
   console.log(walletbalance);
 
   const handlePayment = () => {
+    async function handleWallet() {
+      var total =
+        Number(orderInfo?.itemsPrice) +
+        Number(orderInfo?.shippingPrice) +
+        Number(orderInfo?.taxPrice);
+      console.log(total);
+      const { data } = await axios.post(`/api/v1/handleWallet`, {
+        reducingAmountFromWallet: total,
+      });
+      if (data.success == true) {
+        toast(`Rs.${total} deducted from your wallet`, {
+          type: "success",
+          position: "bottom-center",
+        });
+      } else {
+        toast("Something went wrong", {
+          type: "error",
+          position: "bottom-center",
+        });
+      }
+    }
+
     // Logic to handle order confirmation
     var total =
       Number(orderInfo?.itemsPrice) +
@@ -93,7 +115,7 @@ function WalletPayment() {
       try {
         dispatch(orderCompleted());
         dispatch(createOrder(order));
-
+        handleWallet();
         navigate("/order/success");
         toast("Order Success!", {
           type: "success",
