@@ -14,6 +14,15 @@ app.use("/api/v1", payment);
 
 dotenv.config({ path: path.join(__dirname, "config/config.env") });
 
+// if (process.env.NODE_ENV.trim() === "production") {
+//   app.use(express.static(path.join(__dirname, "../frontend-common/build")));
+//   app.get("*", (req, res) => {
+//     res.sendFile(
+//       path.resolve(__dirname, "../frontend-common/build/index.html")
+//     );
+//   });
+// }
+
 app.use(errorMiddleware);
 
 module.exports = app;

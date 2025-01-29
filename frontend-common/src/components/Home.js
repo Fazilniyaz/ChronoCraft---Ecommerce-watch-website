@@ -49,6 +49,7 @@ export const Home = () => {
     };
 
     fetchCategories();
+    console.log(categories);
 
     if (user && user.blocked === true) {
       toast("You are Blocked by the Admin");
@@ -115,7 +116,7 @@ export const Home = () => {
           <h1 className="headings">Shop By Categories</h1>
           <section id="categories" className="container mt-4">
             <div className="row d-flex justify-content-center">
-              {categories.slice(0, 5).map((category, i) => (
+              {categories?.slice(0, 5).map((category, i) => (
                 <div
                   key={category._id}
                   className="col-6 col-md-2 text-center my-2"
